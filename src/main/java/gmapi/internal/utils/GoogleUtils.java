@@ -1,4 +1,4 @@
-package gmapi.utils;
+package gmapi.internal.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,13 +11,18 @@ import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
 
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class GoogleUtils {
+	
+	public static final String SKYJAM_URL = "https://www.googleapis.com/sj/v1.11";
+	public static final String ANDROID_CLIENT_URL = "https://android.clients.google.com/";
 	
 	private static final String KEY_7_3_29_B64;
 	
@@ -41,10 +46,12 @@ public class GoogleUtils {
 	
 	private static byte[ ] rsaEncrypt( String email, String pass ) {
 		try {
+			byte[ ] ep = ( email + '\0' + pass ).getBytes( Charset.forName( "UTF-8" ) );
+			
 			Cipher cipher = Cipher.getInstance( "RSA/NONE/OAEPPadding" );
 			cipher.init( Cipher.ENCRYPT_MODE, KEY_7_3_29 );
 			
-			return cipher.doFinal( ( email + "\0" + pass ).getBytes( Charset.forName( "UTF-8" ) ) );
+			return cipher.doFinal( ep );
 		}
 		catch( GeneralSecurityException gse ) {
 			throw new AssertionError( "Error encrypting message with RSA.", gse );
@@ -72,7 +79,7 @@ public class GoogleUtils {
 		encodedKey.get( exp );
 		
 		try {
-			RSAPublicKeySpec spec = new RSAPublicKeySpec( new BigInteger( mod ), new BigInteger( exp ) );
+			RSAPublicKeySpec spec = new RSAPublicKeySpec( new BigInteger( 1, mod ), new BigInteger( 1, exp ) );
 			return KeyFactory.getInstance( "RSA" ).generatePublic( spec );
 		}
 		catch( GeneralSecurityException gse ) {
@@ -81,6 +88,8 @@ public class GoogleUtils {
 	}
 	
 	static {
+		Security.addProvider( new BouncyCastleProvider( ) );
+		
 		KEY_7_3_29_B64 = "AAAAgMom/1a/v0lblO2Ubrt60J2gcuXSljGFQXgcyZWveWLEwo6prwgi3iJIZdodyhKZQrNWp5nKJ3srRXcUW+F1BD3baEVGcmEgqaLZUNBjm057pKRI16kB0YppeGx5qIQ5QjKzsR8ETQbKLNWgRY0QRNVz34kMJR3P/LgHax/6rmf5AAAAAwEAAQ==";
 		
 		byte[ ] encodedKey = Base64.decodeBase64( KEY_7_3_29_B64 );
