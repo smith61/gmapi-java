@@ -4,6 +4,7 @@ import static gmapi.internal.utils.Validation.checkNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -13,10 +14,12 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import gmapi.internal.protocol.APICall;
+import gmapi.internal.protocol.mobileclient.DeviceInfoCall;
 import gmapi.internal.protocol.mobileclient.Factory;
 import gmapi.internal.protocol.mobileclient.SongBytesCall;
 import gmapi.internal.protocol.mobileclient.SongStreamCall;
 import gmapi.internal.protocol.mobileclient.TrackCall;
+import gmapi.models.DeviceInfo;
 import gmapi.models.Track;
 
 public class MobileClient {
@@ -76,6 +79,10 @@ public class MobileClient {
 	
 	public Future< byte[ ] > getSongBytes( String songID ) {
 		return this.doCall( new SongBytesCall( songID ) );
+	}
+	
+	public Future< List< DeviceInfo > > getDeviceInfo( ) {
+		return this.doCall( new DeviceInfoCall( ) );
 	}
 	
 }
