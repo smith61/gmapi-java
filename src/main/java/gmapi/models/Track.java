@@ -8,12 +8,16 @@ public class Track {
 	private String artist;
 	private String id;
 	
+	private int trackNumber;
+	
 	public Track( ) {
 		this.album  = "Unknown";
 		this.title  = "Unknown";
 		this.genre  = "Unknown";
 		this.artist = "Unknown";
 		this.id     = "Unknown";
+		
+		this.trackNumber = 0;
 	}
 
 	public String getAlbum( ) {
@@ -56,10 +60,18 @@ public class Track {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "Track [album=" + album + ", title=" + title + ", genre=" + genre + ", artist=" + artist + ", id=" + id
-				+ "]";
+	public int getTrackNumber( ) {
+		return trackNumber;
 	}
-	
+
+	public void setTrackNumber( int trackNumber ) {
+		this.trackNumber = trackNumber;
+	}
+
+	@Override
+	public String toString( ) {
+		return "Track [album=" + album + ", title=" + title + ", genre=" + genre + ", artist=" + artist + ", id=" + id
+				+ ", trackNumber=" + trackNumber + "]";
+	}
+
 }
