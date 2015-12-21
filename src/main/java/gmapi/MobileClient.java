@@ -13,6 +13,8 @@ import com.squareup.okhttp.Response;
 
 import gmapi.internal.protocol.APICall;
 import gmapi.internal.protocol.mobileclient.Factory;
+import gmapi.internal.protocol.mobileclient.TrackCall;
+import gmapi.models.Track;
 
 public class MobileClient {
 	
@@ -50,11 +52,19 @@ public class MobileClient {
 		} );
 	}
 	
-	protected < T > Future< T > doCall( APICall< T > apiCall ) {
+	public < T > Future< T > doCall( APICall< T > apiCall ) {
 		checkNotNull( apiCall, "apiCall" );
 		
 		apiCall.setHttpClient( this.client );
 		return this.executor.submit( apiCall );
+	}
+	
+	public Future< Page< Track > > getTracks( ) {
+		return getTracks( 1000 );
+	}
+	
+	public Future< Page< Track > > getTracks( int pageSize ) {
+		return this.doCall( new TrackCall( this, "", pageSize ) );
 	}
 	
 }
