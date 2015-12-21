@@ -15,6 +15,8 @@ import java.security.Security;
 import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -24,10 +26,14 @@ public class GoogleUtils {
 	public static final String SKYJAM_URL = "https://www.googleapis.com/sj/v1.11";
 	public static final String ANDROID_CLIENT_URL = "https://android.clients.google.com/";
 	
-	private static final String KEY_7_3_29_B64;
+	public static final Charset UTF8 = Charset.forName( "UTF-8" );
 	
+	private static final String KEY_7_3_29_B64;
 	private static final byte[ ] KEY_7_3_29_SHA1;
 	private static final PublicKey KEY_7_3_29;
+	
+	private static final String KEY_HMAC_B64;
+	private static final SecretKeySpec KEY_HMAC;
 	
 	public static String gpsOauthSignature( String email, String pass ) {
 		try {
@@ -44,9 +50,24 @@ public class GoogleUtils {
 		}
 	}
 	
+	public static String getSongSignature( String songID, String salt ) {
+		try {
+			Mac hmac = Mac.getInstance( "HmacSHA1" );
+			hmac.init( KEY_HMAC );
+			
+			hmac.update( songID.getBytes( UTF8 ) );
+			hmac.update( salt.getBytes( UTF8 ) );
+			
+			return Base64.encodeBase64URLSafeString( hmac.doFinal( ) );
+		}
+		catch( GeneralSecurityException gse ) {
+			throw new AssertionError( "Error creating song signature.", gse );
+		}
+	}
+	
 	private static byte[ ] rsaEncrypt( String email, String pass ) {
 		try {
-			byte[ ] ep = ( email + '\0' + pass ).getBytes( Charset.forName( "UTF-8" ) );
+			byte[ ] ep = ( email + '\0' + pass ).getBytes( UTF8 );
 			
 			Cipher cipher = Cipher.getInstance( "RSA/NONE/OAEPPadding" );
 			cipher.init( Cipher.ENCRYPT_MODE, KEY_7_3_29 );
@@ -95,6 +116,12 @@ public class GoogleUtils {
 		byte[ ] encodedKey = Base64.decodeBase64( KEY_7_3_29_B64 );
 		KEY_7_3_29_SHA1 = sha1( encodedKey );
 		KEY_7_3_29 = decodeKey( encodedKey );
+	
+		
+		KEY_HMAC_B64 = "MzRlZTc5ODMtNWVlNi00MTQ3LWFhODYtNDQzZWEwNjJhYmY3NzQ0OTNkNmEtMmExNS00M2ZlLWFhY2UtZTc4NTY2OTI3NTg1Cg==";
+
+		encodedKey = Base64.decodeBase64( KEY_HMAC_B64 );
+		KEY_HMAC = new SecretKeySpec( encodedKey, "HmacSHA1" );
 	}
 	
 }

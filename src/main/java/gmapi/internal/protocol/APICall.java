@@ -37,6 +37,10 @@ public abstract class APICall< T > implements Callable< T > {
 		Call call = this.httpClient.newCall( request );
 		Response response = call.execute( );
 		
+		if( !response.isSuccessful( ) ) {
+			throw new IOException( "Bad request: " + response.body( ).string( ) );
+		}
+		
 		return this.parseResponse( response );
 	}
 	
