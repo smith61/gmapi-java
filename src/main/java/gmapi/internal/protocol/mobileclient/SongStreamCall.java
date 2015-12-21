@@ -1,5 +1,7 @@
 package gmapi.internal.protocol.mobileclient;
 
+import static gmapi.internal.utils.Validation.checkNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -14,7 +16,7 @@ public class SongStreamCall extends APICall< InputStream > {
 	private final String songID;
 	
 	public SongStreamCall( String songID ) {
-		this.songID = songID;
+		this.songID = checkNotNull( songID, "songID" );
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package gmapi.internal.protocol.mobileclient;
 
+import static gmapi.internal.utils.Validation.checkNotNull;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -26,11 +28,11 @@ public class TrackCall extends APICall< Page< Track > > {
 	private final String pageToken;
 	private final int pageSize;
 	
-	public TrackCall( MobileClient client, String pageToken, int pageSize ) {
-		this.client = client;
+	public TrackCall( MobileClient client, String pageToken, int pageSize ) {		
+		this.client = checkNotNull( client, "client" );
 		
-		this.pageToken = pageToken;
-		this.pageSize = pageSize;
+		this.pageToken = checkNotNull( pageToken, "pageToken" );
+		this.pageSize = checkNotNull( pageSize, "pageSize" );
 	}
 	
 	@Override
