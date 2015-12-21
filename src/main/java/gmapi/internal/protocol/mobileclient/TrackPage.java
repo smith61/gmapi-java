@@ -2,6 +2,7 @@ package gmapi.internal.protocol.mobileclient;
 
 import static gmapi.internal.utils.Validation.checkNotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -24,17 +25,12 @@ public class TrackPage implements Page< Track > {
 		this.nextPageToken = checkNotNull( nextPageToken, "nextPageToken" );
 		this.pageSize = checkNotNull( pageSize, "pageSize" );
 		
-		this.currentPage = checkNotNull( currentPage, "currentPage" );
+		this.currentPage = Collections.unmodifiableList( checkNotNull( currentPage, "currentPage" ) );
 	}
 	
 	@Override
-	public Track get( int index ) {
-		return this.currentPage.get( index );
-	}
-
-	@Override
-	public int size( ) {
-		return this.currentPage.size( );
+	public List< Track > getElements( ) {
+		return this.currentPage;
 	}
 
 	@Override

@@ -1,11 +1,11 @@
 package gmapi;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 public interface Page< T > {
-
-	T get( int index );
-	int size( );
+	
+	List< T > getElements( );
 	
 	boolean hasNext( );
 	Future< Page< T > > next( );
