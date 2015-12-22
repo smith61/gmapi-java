@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +18,7 @@ import gmapi.MobileClient;
 import gmapi.Page;
 import gmapi.internal.protocol.APICall;
 import gmapi.internal.utils.GoogleUtils;
+import gmapi.internal.utils.JsonUtils;
 import gmapi.models.Track;
 
 public class TrackCall extends APICall< Page< Track > > {
@@ -37,7 +37,7 @@ public class TrackCall extends APICall< Page< Track > > {
 	
 	@Override
 	protected Page< Track > parseResponse( Response response ) throws IOException {
-		Gson gson = new GsonBuilder( ).create( );
+		Gson gson = JsonUtils.newGson( );
 		
 		JsonObject root = gson.fromJson( response.body( ).charStream( ), JsonObject.class );
 		

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -13,13 +12,14 @@ import com.squareup.okhttp.Response;
 
 import gmapi.internal.protocol.APICall;
 import gmapi.internal.utils.GoogleUtils;
+import gmapi.internal.utils.JsonUtils;
 import gmapi.models.DeviceInfo;
 
 public class DeviceInfoCall extends APICall< List< DeviceInfo > > {
 
 	@Override
 	protected List< DeviceInfo > parseResponse( Response response ) throws IOException {
-		Gson gson = new GsonBuilder( ).create( );
+		Gson gson = JsonUtils.newGson( );
 		
 		JsonObject root = gson.fromJson( response.body( ).charStream( ), JsonObject.class );
 		
