@@ -23,6 +23,7 @@ public class Track {
 	private String storeId;
 	private String albumId;
 	private String[ ] artistId;
+	private String id;
 	private String nid;
 	
 	private int year;
@@ -44,6 +45,7 @@ public class Track {
 		this.storeId      = "";
 		this.albumId      = "";
 		this.artistId     = new String[ 0 ];
+		this.id           = "";
 		this.nid          = "";
 		
 		this.year        = -1;
