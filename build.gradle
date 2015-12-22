@@ -13,4 +13,6 @@ dependencies {
 	compile 'commons-codec:commons-codec:1.10'
 	compile 'org.bouncycastle:bcprov-jdk15on:1.53'
 	compile 'com.google.code.gson:gson:2.5'
+	
+	compile 'org.projectlombok:lombok:1.16.6'
 }
