@@ -14,8 +14,8 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import gmapi.MobileClient;
 import gmapi.Page;
+import gmapi.internal.mobileclient.MobileClientImpl;
 import gmapi.internal.protocol.APICall;
 import gmapi.internal.utils.GoogleUtils;
 import gmapi.internal.utils.JsonUtils;
@@ -23,12 +23,12 @@ import gmapi.models.Track;
 
 public class TrackCall extends APICall< Page< Track > > {
 
-	private final MobileClient client;
+	private final MobileClientImpl client;
 	
 	private final String pageToken;
 	private final int pageSize;
 	
-	public TrackCall( MobileClient client, String pageToken, int pageSize ) {		
+	public TrackCall( MobileClientImpl client, String pageToken, int pageSize ) {		
 		this.client = checkNotNull( client, "client" );
 		
 		this.pageToken = checkNotNull( pageToken, "pageToken" );

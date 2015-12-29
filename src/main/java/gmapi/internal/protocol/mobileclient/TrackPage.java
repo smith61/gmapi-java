@@ -6,20 +6,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import gmapi.MobileClient;
 import gmapi.Page;
+import gmapi.internal.mobileclient.MobileClientImpl;
 import gmapi.models.Track;
 
 public class TrackPage implements Page< Track > {
 
-	private final MobileClient client;
+	private final MobileClientImpl client;
 	
 	private final String nextPageToken;
 	private final int pageSize;
 	
 	private final List< Track > currentPage;
 	
-	public TrackPage( MobileClient client, String nextPageToken, int pageSize, List< Track > currentPage ) {
+	public TrackPage( MobileClientImpl client, String nextPageToken, int pageSize, List< Track > currentPage ) {
 		this.client = checkNotNull( client, "client" );
 		
 		this.nextPageToken = checkNotNull( nextPageToken, "nextPageToken" );
@@ -44,7 +44,7 @@ public class TrackPage implements Page< Track > {
 			throw new IllegalStateException( "No new page." );
 		}
 		
-		return this.client.doCall( new TrackCall( this.client, this.nextPageToken, this.pageSize ) );
+		return this.client.doAuthedCall( new TrackCall( this.client, this.nextPageToken, this.pageSize ) );
 	}
 
 	

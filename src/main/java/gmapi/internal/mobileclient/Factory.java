@@ -1,4 +1,4 @@
-package gmapi.internal.protocol.mobileclient;
+package gmapi.internal.mobileclient;
 
 import static gmapi.internal.utils.Validation.checkNotNull;
 
@@ -12,6 +12,8 @@ import com.squareup.okhttp.OkHttpClient;
 
 import gmapi.AuthenticationException;
 import gmapi.MobileClient;
+import gmapi.internal.protocol.mobileclient.LoginCall;
+import gmapi.internal.protocol.mobileclient.OAuthCall;
 
 public class Factory implements Callable< MobileClient > {
 
@@ -45,7 +47,7 @@ public class Factory implements Callable< MobileClient > {
 			}
 			String oauthToken = res.get( "Auth" );
 			
-			return new MobileClient( client, this.executor, this.androidID, oauthToken );
+			return new MobileClientImpl( client, this.executor, this.androidID, oauthToken );
 		}
 		catch( IOException ioe ) {
 			throw new AuthenticationException( ioe );
@@ -65,5 +67,5 @@ public class Factory implements Callable< MobileClient > {
 		
 		return oauthCall.call( );
 	}
-	
+
 }
