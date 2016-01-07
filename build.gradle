@@ -1,14 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.7
 
-group = 'net.ddns.jsmith-rs'
+group   = 'net.ddns.jsmith-rs'
 version = '1.0.0'
-if( "$System.env.BUILD_SNAPSHOT".equalsIgnoreCase( 'true' ) ) {
+if( "${System.env.BUILD_SNAPSHOT}".equalsIgnoreCase( 'true' ) ) {
 	version = version + '-SNAPSHOT'
 }
+
 
 repositories {
 	mavenCentral( )
@@ -21,12 +21,4 @@ dependencies {
 	compile 'com.google.code.gson:gson:2.5'
 	
 	compile 'org.projectlombok:lombok:1.16.6'
-}
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
 }
