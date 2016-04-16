@@ -60,7 +60,7 @@ public class LoginCall extends APICall< Map< String, String > > {
 		formParams.put( "sdk_version", "17" );
 		formParams.put( "Email", this.email );
 		formParams.put( "EncryptedPasswd", GoogleUtils.gpsOauthSignature( this.email, this.password ) );
-		formParams.put( "androidID", this.androidID );
+		formParams.put( "androidId", this.androidID );
 		
 		StringBuilder encodedForm = new StringBuilder( );
 		for( Entry< String, String > formParam : formParams.entrySet( ) ) {
