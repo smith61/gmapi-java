@@ -1,6 +1,4 @@
-package gmapi.internal.protocol.mobileclient;
-
-import static gmapi.internal.utils.Validation.checkNotNull;
+package gmapi.internal.protocol;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,34 +13,38 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import gmapi.Page;
-import gmapi.internal.mobileclient.MobileClientImpl;
-import gmapi.internal.protocol.APICall;
-import gmapi.internal.utils.GoogleUtils;
+import gmapi.internal.AuthenticatedClient;
 import gmapi.internal.utils.JsonUtils;
-import gmapi.models.Track;
 
-public class TrackCall extends APICall< Page< Track > > {
+public class APIPageCall< T > extends APICall< Page< T > > {
 
-	private final MobileClientImpl client;
+	private final AuthenticatedClient client;
+	
+	private final Info< T > callInfo;
 	
 	private final String pageToken;
 	private final int pageSize;
 	
-	public TrackCall( MobileClientImpl client, String pageToken, int pageSize ) {		
-		this.client = checkNotNull( client, "client" );
+	public APIPageCall( AuthenticatedClient client, Info< T > callInfo, int pageSize ) {
+		this( client, callInfo, "", pageSize );
+	}
+	
+	public APIPageCall( AuthenticatedClient client, Info< T > callInfo, String pageToken, int pageSize ) {
+		this.client = client;
 		
-		this.pageToken = checkNotNull( pageToken, "pageToken" );
-		this.pageSize = checkNotNull( pageSize, "pageSize" );
+		this.callInfo = callInfo;
+		
+		this.pageToken = pageToken;
+		this.pageSize = pageSize;
 	}
 	
 	@Override
-	protected Page< Track > parseResponse( Response response ) throws IOException {
+	protected Page< T > parseResponse( Response response ) throws IOException {
 		Gson gson = JsonUtils.newGson( );
 		
 		JsonObject root = gson.fromJson( response.body( ).charStream( ), JsonObject.class );
 		
-		String nextPageToken = "";
-		
+		String nextPageToken = null;
 		JsonElement element = root.get( "nextPageToken" );
 		if( element != null && !element.isJsonNull( ) ) {
 			nextPageToken = element.getAsString( );
@@ -50,9 +52,8 @@ public class TrackCall extends APICall< Page< Track > > {
 		
 		element = root.get( "data" ).getAsJsonObject( ).get( "items" );
 		
-		List< Track > tracks = gson.fromJson( element, new TypeToken< List< Track > >( ) { }.getType( ) );
-		
-		return new TrackPage( this.client, nextPageToken, this.pageSize, tracks );
+		List< T > result = gson.fromJson( element, this.callInfo.getTypeToken( ).getType( ) );
+		return new APIPage< T >( this.client, this.callInfo, nextPageToken, this.pageSize, result );
 	}
 	
 	@Override
@@ -66,18 +67,23 @@ public class TrackCall extends APICall< Page< Track > > {
 		
 		return RequestBody.create( MediaType.parse( "application/json" ), json );
 	}
-
+	
 	@Override
 	protected HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.SKYJAM_URL ).newBuilder( );
-		builder.addPathSegment( "trackfeed" );
-		
-		return builder.build( );
+		return this.callInfo.getUrl( );
 	}
 
 	@Override
 	protected String getMethod( ) {
 		return "POST";
+	}
+
+	public static interface Info< T > {
+		
+		TypeToken< List< T > > getTypeToken( );
+		
+		HttpUrl getUrl( );
+		
 	}
 	
 }

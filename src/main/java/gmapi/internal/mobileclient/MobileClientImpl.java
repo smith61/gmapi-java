@@ -13,15 +13,17 @@ import com.squareup.okhttp.Response;
 
 import gmapi.MobileClient;
 import gmapi.Page;
+import gmapi.internal.AuthenticatedClient;
 import gmapi.internal.protocol.APICall;
+import gmapi.internal.protocol.APIPageCall;
 import gmapi.internal.protocol.mobileclient.DeviceInfoCall;
 import gmapi.internal.protocol.mobileclient.SongBytesCall;
 import gmapi.internal.protocol.mobileclient.SongStreamCall;
-import gmapi.internal.protocol.mobileclient.TrackCall;
+import gmapi.internal.protocol.mobileclient.TrackCallInfo;
 import gmapi.models.DeviceInfo;
 import gmapi.models.Track;
 
-public class MobileClientImpl implements MobileClient {
+public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 
 	private final OkHttpClient httpClient;
 	private final ExecutorService executorService;
@@ -58,7 +60,7 @@ public class MobileClientImpl implements MobileClient {
 
 	@Override
 	public Future< Page< Track > > getTracks( int pageSize ) {
-		return this.doAuthedCall( new TrackCall( this, "", pageSize ) );
+		return this.doAuthedCall( new APIPageCall< Track >( this, new TrackCallInfo( ), pageSize ) );
 	}
 
 	@Override
