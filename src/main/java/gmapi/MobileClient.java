@@ -20,4 +20,7 @@ public interface MobileClient {
 	
 	Future< List< DeviceInfo > > getDeviceInfo( );
 	
+	Future< Page< Track > > getPromotedTracks( );
+	Future< Page< Track > > getPromotedTracks( int pageSize );
+	
 }

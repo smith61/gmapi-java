@@ -17,6 +17,7 @@ import gmapi.internal.AuthenticatedClient;
 import gmapi.internal.protocol.APICall;
 import gmapi.internal.protocol.APIPageCall;
 import gmapi.internal.protocol.mobileclient.DeviceInfoCall;
+import gmapi.internal.protocol.mobileclient.PromotedTrackCallInfo;
 import gmapi.internal.protocol.mobileclient.SongBytesCall;
 import gmapi.internal.protocol.mobileclient.SongStreamCall;
 import gmapi.internal.protocol.mobileclient.TrackCallInfo;
@@ -86,6 +87,16 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 	@Override
 	public Future< List< DeviceInfo > > getDeviceInfo( ) {
 		return this.doAuthedCall( new DeviceInfoCall( ) );
+	}
+
+	@Override
+	public Future< Page< Track > > getPromotedTracks() {
+		return this.getPromotedTracks( 10000 );
+	}
+
+	@Override
+	public Future< Page< Track > > getPromotedTracks( int pageSize ) {
+		return this.doAuthedCall( new APIPageCall< Track >( this, new PromotedTrackCallInfo( ), pageSize ) );
 	}
 
 }
