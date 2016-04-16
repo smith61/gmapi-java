@@ -1,6 +1,7 @@
 package gmapi.internal.protocol;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -50,9 +51,7 @@ public class APIPageCall< T > extends APICall< Page< T > > {
 			nextPageToken = element.getAsString( );
 		}
 		
-		element = root.get( "data" ).getAsJsonObject( ).get( "items" );
-		
-		List< T > result = gson.fromJson( element, this.callInfo.getTypeToken( ).getType( ) );
+		List< T > result = this.parseResponse( root, gson );
 		return new APIPage< T >( this.client, this.callInfo, nextPageToken, this.pageSize, result );
 	}
 	
@@ -76,6 +75,18 @@ public class APIPageCall< T > extends APICall< Page< T > > {
 	@Override
 	protected String getMethod( ) {
 		return "POST";
+	}
+	
+	private List< T > parseResponse( JsonObject root, Gson gson ) {
+		JsonElement element = root.get( "data" );
+		if( element == null || !element.isJsonObject( ) ) {
+			return Collections.emptyList( );
+		}
+		element = element.getAsJsonObject( ).get( "items" );
+		if( element == null || element.isJsonNull( ) ) {
+			return Collections.emptyList( );
+		}
+		return gson.fromJson( element, this.callInfo.getTypeToken( ).getType( ) );
 	}
 
 	public static interface Info< T > {
