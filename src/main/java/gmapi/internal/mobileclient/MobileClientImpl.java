@@ -72,6 +72,16 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 	public Future< byte[ ] > getTrackBytes( String trackID ) {
 		return this.doAuthedCall( new SongBytesCall( trackID ) );
 	}
+	
+	@Override
+	public Future< InputStream > getTrackStream( Track track ) {
+		return this.getTrackStream( track.getNid( ) );
+	}
+	
+	@Override
+	public Future< byte[ ] > getTrackBytes( Track track ) {
+		return this.getTrackBytes( track.getNid( ) );
+	}
 
 	@Override
 	public Future< List< DeviceInfo > > getDeviceInfo( ) {
