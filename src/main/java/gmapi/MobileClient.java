@@ -15,6 +15,12 @@ public interface MobileClient {
 	Future< InputStream > getTrackStream( String trackID );
 	Future< byte[ ] > getTrackBytes( String trackID );
 	
+	Future< InputStream > getTrackStream( Track track );
+	Future< byte[ ] > getTrackBytes( Track track );
+	
 	Future< List< DeviceInfo > > getDeviceInfo( );
+	
+	Future< Page< Track > > getPromotedTracks( );
+	Future< Page< Track > > getPromotedTracks( int pageSize );
 	
 }

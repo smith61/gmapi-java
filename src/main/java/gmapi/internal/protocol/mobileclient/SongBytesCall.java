@@ -24,7 +24,7 @@ public class SongBytesCall extends APICall< byte[ ] > {
 		
 		int read = 0;
 		byte[ ] buf = new byte[ 4096 ];
-		while( ( in.read( buf ) ) != -1 ) {
+		while( ( read = in.read( buf ) ) != -1 ) {
 			out.write( buf, 0, read );
 		}
 		

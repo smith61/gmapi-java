@@ -70,7 +70,7 @@ public class OAuthCall extends APICall< Map< String, String > > {
 		formParams.put( "lang", "en" );
 		formParams.put( "sdk_version", "17" );
 		formParams.put( "client_sig", "38918a453d07199354f8b19af05ec6562ced5788" );
-		formParams.put( "androidID", this.androidID );
+		formParams.put( "androidId", this.androidID );
 		formParams.put( "EncryptedPasswd", this.masterToken );
 		
 		StringBuilder encodedForm = new StringBuilder( );
