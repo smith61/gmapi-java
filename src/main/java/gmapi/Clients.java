@@ -17,5 +17,13 @@ public class Clients {
 		
 		return service.submit( new Factory( email, password, androidID, service ) );
 	}
+
+	public static MobileClient newMobileClient( ExecutorService service, String androidId, String accessToken ) {
+		checkNotNull( service, "service" );
+		checkNotNull( androidId, "androidId" );
+		checkNotNull( accessToken, "accessToken" );
+
+		return Factory.newMobileClient( service, androidId, accessToken );
+	}
 	
 }
