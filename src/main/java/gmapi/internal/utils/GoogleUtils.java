@@ -22,8 +22,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class GoogleUtils {
-	
-	public static final String SKYJAM_URL = "https://www.googleapis.com/sj/v2.4";
+
+	public static final String MCLIENTS_URL = "https://mclients.googleapis.com/";
+	public static final String MCLIENTS_SJ_URL = GoogleUtils.MCLIENTS_URL + "sj/v2.5";
 	public static final String ANDROID_CLIENT_URL = "https://android.clients.google.com/";
 	
 	public static final Charset UTF8 = Charset.forName( "UTF-8" );

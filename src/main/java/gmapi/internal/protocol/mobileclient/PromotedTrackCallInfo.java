@@ -18,7 +18,7 @@ public class PromotedTrackCallInfo implements APIPageCall.Info< Track > {
 
 	@Override
 	public HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.SKYJAM_URL ).newBuilder( );
+		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
 		builder.addPathSegment( "ephemeral" ).addPathSegment( "top" );
 		
 		return builder.build( );

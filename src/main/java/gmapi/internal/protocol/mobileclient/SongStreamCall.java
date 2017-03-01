@@ -26,7 +26,7 @@ public class SongStreamCall extends APICall< InputStream > {
 
 	@Override
 	protected HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.ANDROID_CLIENT_URL ).newBuilder( );
+		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.SKYJAM_STREAM_URL ).newBuilder( );
 		builder.addPathSegment( "music" ).addPathSegment( "mplay" );
 		
 		String salt = Long.toString( System.currentTimeMillis( ) );

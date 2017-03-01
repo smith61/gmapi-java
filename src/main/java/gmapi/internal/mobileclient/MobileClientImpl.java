@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -41,7 +42,12 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 				builder.header( "User-Agent", "gmapi-java/mobileclient" );
 				builder.header( "X-Device-ID", androidID );
 				builder.header( "Authorization", "GoogleLogin auth=" + oauthToken );
-				
+
+				HttpUrl.Builder urlBuilder = chain.request( ).httpUrl( ).newBuilder( );
+				urlBuilder.addQueryParameter( "dv", "0" );
+				urlBuilder.addQueryParameter( "hl", "en_US" );
+				urlBuilder.addQueryParameter( "tier", "aa" );
+				builder.url( urlBuilder.build( ) );
 				
 				return chain.proceed( builder.build( ) );
 			}

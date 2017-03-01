@@ -29,7 +29,7 @@ public class DeviceInfoCall extends APICall< List< DeviceInfo > > {
 
 	@Override
 	protected HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.SKYJAM_URL ).newBuilder( );
+		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
 		builder.addPathSegment( "devicemanagementinfo" );
 		
 		return builder.build( );
