@@ -13,28 +13,28 @@ import com.google.gson.JsonParseException;
 
 public class JsonUtils {
 
-	public static JsonDeserializer< URL > URL_DESERIALIZER = new URLDeserializer( );
-		
-	public static Gson newGson( ) {
-		GsonBuilder builder = new GsonBuilder( );
-		builder.registerTypeAdapter( URL.class, URL_DESERIALIZER );
-		
-		return builder.create( );
-	}
-	
-	private static class URLDeserializer implements JsonDeserializer< URL > {
+    public static JsonDeserializer< URL > URL_DESERIALIZER = new URLDeserializer( );
 
-		@Override
-		public URL deserialize( JsonElement json, Type typeOfT, JsonDeserializationContext context ) throws JsonParseException {
-			String url = json.getAsJsonObject( ).get( "url" ).getAsString( );
-			try {
-				return new URL( url );
-			}
-			catch( MalformedURLException excep ) {
-				throw new JsonParseException( "Invalid URL: " + url );
-			}
-		}
-		
-	}
-	
+    public static Gson newGson( ) {
+        GsonBuilder builder = new GsonBuilder( );
+        builder.registerTypeAdapter( URL.class, URL_DESERIALIZER );
+
+        return builder.create( );
+    }
+
+    private static class URLDeserializer implements JsonDeserializer< URL > {
+
+        @Override
+        public URL deserialize( JsonElement json, Type typeOfT, JsonDeserializationContext context ) throws JsonParseException {
+            String url = json.getAsJsonObject( ).get( "url" ).getAsString( );
+            try {
+                return new URL( url );
+            }
+            catch( MalformedURLException excep ) {
+                throw new JsonParseException( "Invalid URL: " + url );
+            }
+        }
+
+    }
+
 }

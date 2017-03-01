@@ -17,27 +17,28 @@ import gmapi.models.DeviceInfo;
 
 public class DeviceInfoCall extends APICall< List< DeviceInfo > > {
 
-	@Override
-	protected List< DeviceInfo > parseResponse( Response response ) throws IOException {
-		Gson gson = JsonUtils.newGson( );
-		
-		JsonObject root = gson.fromJson( response.body( ).charStream( ), JsonObject.class );
-		
-		JsonElement element = root.get( "data" ).getAsJsonObject( ).get( "items" );
-		return gson.fromJson( element, new TypeToken< List< DeviceInfo > >( ) { }.getType( ) );
-	}
+    @Override
+    protected List< DeviceInfo > parseResponse( Response response ) throws IOException {
+        Gson gson = JsonUtils.newGson( );
 
-	@Override
-	protected HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
-		builder.addPathSegment( "devicemanagementinfo" );
-		
-		return builder.build( );
-	}
+        JsonObject root = gson.fromJson( response.body( ).charStream( ), JsonObject.class );
 
-	@Override
-	protected String getMethod( ) {
-		return "GET";
-	}
-	
+        JsonElement element = root.get( "data" ).getAsJsonObject( ).get( "items" );
+        return gson.fromJson( element, new TypeToken< List< DeviceInfo > >( ) {
+        }.getType( ) );
+    }
+
+    @Override
+    protected HttpUrl getUrl( ) {
+        HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
+        builder.addPathSegment( "devicemanagementinfo" );
+
+        return builder.build( );
+    }
+
+    @Override
+    protected String getMethod( ) {
+        return "GET";
+    }
+
 }

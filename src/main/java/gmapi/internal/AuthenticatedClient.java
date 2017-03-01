@@ -6,6 +6,6 @@ import gmapi.internal.protocol.APICall;
 
 public interface AuthenticatedClient {
 
-	< T > Future< T > doAuthedCall( APICall< T > call );
-	
+    < T > Future< T > doAuthedCall( APICall< T > call );
+
 }

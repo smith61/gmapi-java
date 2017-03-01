@@ -11,17 +11,18 @@ import gmapi.models.Track;
 
 public class TrackCallInfo implements APIPageCall.Info< Track > {
 
-	@Override
-	public TypeToken< List< Track > > getTypeToken( ) {
-		return new TypeToken< List< Track > >( ) { };
-	}
+    @Override
+    public TypeToken< List< Track > > getTypeToken( ) {
+        return new TypeToken< List< Track > >( ) {
+        };
+    }
 
-	@Override
-	public HttpUrl getUrl( ) {
-		HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
-		builder.addPathSegment( "trackfeed" );
-		
-		return builder.build( );
-	}
+    @Override
+    public HttpUrl getUrl( ) {
+        HttpUrl.Builder builder = HttpUrl.parse( GoogleUtils.MCLIENTS_SJ_URL ).newBuilder( );
+        builder.addPathSegment( "trackfeed" );
+
+        return builder.build( );
+    }
 
 }

@@ -27,98 +27,98 @@ import gmapi.models.Track;
 
 public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 
-	private final OkHttpClient httpClient;
-	private final ExecutorService executorService;
+    private final OkHttpClient httpClient;
+    private final ExecutorService executorService;
 
-	private final String androidId;
-	private final String accessToken;
-	
-	protected MobileClientImpl( OkHttpClient httpClient, ExecutorService service, final String androidID, final String oauthToken ) {
-		this.httpClient = httpClient;
-		this.executorService = service;
+    private final String androidId;
+    private final String accessToken;
 
-		this.androidId = androidID;
-		this.accessToken = oauthToken;
-		
-		this.httpClient.interceptors( ).add( new Interceptor( ) {
-			
-			@Override
-			public Response intercept( Chain chain ) throws IOException {
-				Request.Builder builder = chain.request( ).newBuilder( );
-				builder.header( "User-Agent", "gmapi-java/mobileclient" );
-				builder.header( "X-Device-ID", androidID );
-				builder.header( "Authorization", "GoogleLogin auth=" + oauthToken );
+    protected MobileClientImpl( OkHttpClient httpClient, ExecutorService service, final String androidID, final String oauthToken ) {
+        this.httpClient = httpClient;
+        this.executorService = service;
 
-				HttpUrl.Builder urlBuilder = chain.request( ).httpUrl( ).newBuilder( );
-				urlBuilder.addQueryParameter( "dv", "0" );
-				urlBuilder.addQueryParameter( "hl", "en_US" );
-				urlBuilder.addQueryParameter( "tier", "aa" );
-				builder.url( urlBuilder.build( ) );
-				
-				return chain.proceed( builder.build( ) );
-			}
-			
-		} );
-	}
+        this.androidId = androidID;
+        this.accessToken = oauthToken;
 
-	@Override
-	public String getAndroidId( ) {
-		return this.androidId;
-	}
+        this.httpClient.interceptors( ).add( new Interceptor( ) {
 
-	@Override
-	public String getAccessToken( ) {
-		return this.accessToken;
-	}
-	
-	public < T > Future< T > doAuthedCall( APICall< T > apiCall ) {
-		apiCall.setHttpClient( this.httpClient );
-		return this.executorService.submit( apiCall );
-	}
-	
-	@Override
-	public Future< Page< Track > > getTracks( ) {
-		return this.getTracks( 10000 );
-	}
+            @Override
+            public Response intercept( Chain chain ) throws IOException {
+                Request.Builder builder = chain.request( ).newBuilder( );
+                builder.header( "User-Agent", "gmapi-java/mobileclient" );
+                builder.header( "X-Device-ID", androidID );
+                builder.header( "Authorization", "GoogleLogin auth=" + oauthToken );
 
-	@Override
-	public Future< Page< Track > > getTracks( int pageSize ) {
-		return this.doAuthedCall( new APIPageCall< Track >( this, new TrackCallInfo( ), pageSize ) );
-	}
+                HttpUrl.Builder urlBuilder = chain.request( ).httpUrl( ).newBuilder( );
+                urlBuilder.addQueryParameter( "dv", "0" );
+                urlBuilder.addQueryParameter( "hl", "en_US" );
+                urlBuilder.addQueryParameter( "tier", "aa" );
+                builder.url( urlBuilder.build( ) );
 
-	@Override
-	public Future< InputStream > getTrackStream( String trackID ) {
-		return this.doAuthedCall( new SongStreamCall( trackID ) );
-	}
+                return chain.proceed( builder.build( ) );
+            }
 
-	@Override
-	public Future< byte[ ] > getTrackBytes( String trackID ) {
-		return this.doAuthedCall( new SongBytesCall( trackID ) );
-	}
-	
-	@Override
-	public Future< InputStream > getTrackStream( Track track ) {
-		return this.getTrackStream( track.getNid( ) );
-	}
-	
-	@Override
-	public Future< byte[ ] > getTrackBytes( Track track ) {
-		return this.getTrackBytes( track.getNid( ) );
-	}
+        } );
+    }
 
-	@Override
-	public Future< List< DeviceInfo > > getDeviceInfo( ) {
-		return this.doAuthedCall( new DeviceInfoCall( ) );
-	}
+    @Override
+    public String getAndroidId( ) {
+        return this.androidId;
+    }
 
-	@Override
-	public Future< Page< Track > > getPromotedTracks() {
-		return this.getPromotedTracks( 10000 );
-	}
+    @Override
+    public String getAccessToken( ) {
+        return this.accessToken;
+    }
 
-	@Override
-	public Future< Page< Track > > getPromotedTracks( int pageSize ) {
-		return this.doAuthedCall( new APIPageCall< Track >( this, new PromotedTrackCallInfo( ), pageSize ) );
-	}
+    public < T > Future< T > doAuthedCall( APICall< T > apiCall ) {
+        apiCall.setHttpClient( this.httpClient );
+        return this.executorService.submit( apiCall );
+    }
+
+    @Override
+    public Future< Page< Track > > getTracks( ) {
+        return this.getTracks( 10000 );
+    }
+
+    @Override
+    public Future< Page< Track > > getTracks( int pageSize ) {
+        return this.doAuthedCall( new APIPageCall< >( this, new TrackCallInfo( ), pageSize ) );
+    }
+
+    @Override
+    public Future< InputStream > getTrackStream( String trackID ) {
+        return this.doAuthedCall( new SongStreamCall( trackID ) );
+    }
+
+    @Override
+    public Future< byte[] > getTrackBytes( String trackID ) {
+        return this.doAuthedCall( new SongBytesCall( trackID ) );
+    }
+
+    @Override
+    public Future< InputStream > getTrackStream( Track track ) {
+        return this.getTrackStream( track.getNid( ) );
+    }
+
+    @Override
+    public Future< byte[] > getTrackBytes( Track track ) {
+        return this.getTrackBytes( track.getNid( ) );
+    }
+
+    @Override
+    public Future< List< DeviceInfo > > getDeviceInfo( ) {
+        return this.doAuthedCall( new DeviceInfoCall( ) );
+    }
+
+    @Override
+    public Future< Page< Track > > getPromotedTracks( ) {
+        return this.getPromotedTracks( 10000 );
+    }
+
+    @Override
+    public Future< Page< Track > > getPromotedTracks( int pageSize ) {
+        return this.doAuthedCall( new APIPageCall< >( this, new PromotedTrackCallInfo( ), pageSize ) );
+    }
 
 }
