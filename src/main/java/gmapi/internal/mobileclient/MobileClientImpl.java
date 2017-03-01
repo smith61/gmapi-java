@@ -29,10 +29,16 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 
 	private final OkHttpClient httpClient;
 	private final ExecutorService executorService;
+
+	private final String androidId;
+	private final String accessToken;
 	
 	protected MobileClientImpl( OkHttpClient httpClient, ExecutorService service, final String androidID, final String oauthToken ) {
 		this.httpClient = httpClient;
 		this.executorService = service;
+
+		this.androidId = androidID;
+		this.accessToken = oauthToken;
 		
 		this.httpClient.interceptors( ).add( new Interceptor( ) {
 			
@@ -53,6 +59,16 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
 			}
 			
 		} );
+	}
+
+	@Override
+	public String getAndroidId( ) {
+		return this.androidId;
+	}
+
+	@Override
+	public String getAccessToken( ) {
+		return this.accessToken;
 	}
 	
 	public < T > Future< T > doAuthedCall( APICall< T > apiCall ) {

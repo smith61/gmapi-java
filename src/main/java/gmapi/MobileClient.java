@@ -9,6 +9,9 @@ import gmapi.models.Track;
 
 public interface MobileClient {
 
+	String getAndroidId( );
+	String getAccessToken( );
+
 	Future< Page< Track > > getTracks( );
 	Future< Page< Track > > getTracks( int pageSize );
 	
@@ -22,5 +25,5 @@ public interface MobileClient {
 	
 	Future< Page< Track > > getPromotedTracks( );
 	Future< Page< Track > > getPromotedTracks( int pageSize );
-	
+
 }
