@@ -3,11 +3,11 @@ package gmapi.models;
 import java.net.URL;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Track {
-
-    private String kind;
+@EqualsAndHashCode( callSuper = false )
+public final class Track extends GMObject {
 
     private String title;
     private String artist;
@@ -31,26 +31,7 @@ public class Track {
     private int trackNumber;
 
     public Track( ) {
-        this.kind = "Unknown";
-        this.title = "Unknown";
-        this.artist = "Unknown";
-        this.albumArtist = "Unknown";
-
-        this.genre = "Unknown";
-        this.trackType = "Unknown";
-
-        this.albumArtRef = new URL[ 0 ];
-        this.artistArtRef = new URL[ 0 ];
-
-        this.storeId = "";
-        this.albumId = "";
-        this.artistId = new String[ 0 ];
-        this.id = "";
-        this.nid = "";
-
-        this.year = -1;
-        this.discNumber = -1;
-        this.trackNumber = -1;
+        super( Kind.TRACK );
     }
 
 }
