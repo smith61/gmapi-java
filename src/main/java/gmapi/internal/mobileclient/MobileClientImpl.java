@@ -19,10 +19,12 @@ import gmapi.internal.protocol.APICall;
 import gmapi.internal.protocol.APIPageCall;
 import gmapi.internal.protocol.mobileclient.DeviceInfoCall;
 import gmapi.internal.protocol.mobileclient.PromotedTrackCallInfo;
+import gmapi.internal.protocol.mobileclient.SearchCall;
 import gmapi.internal.protocol.mobileclient.SongBytesCall;
 import gmapi.internal.protocol.mobileclient.SongStreamCall;
 import gmapi.internal.protocol.mobileclient.TrackCallInfo;
 import gmapi.models.DeviceInfo;
+import gmapi.models.SearchResult;
 import gmapi.models.Track;
 
 public class MobileClientImpl implements AuthenticatedClient, MobileClient {
@@ -119,6 +121,16 @@ public class MobileClientImpl implements AuthenticatedClient, MobileClient {
     @Override
     public Future< Page< Track > > getPromotedTracks( int pageSize ) {
         return this.doAuthedCall( new APIPageCall< >( this, new PromotedTrackCallInfo( ), pageSize ) );
+    }
+
+    @Override
+    public Future< List< SearchResult > > search( String query ) {
+        return this.search( query, -1 );
+    }
+
+    @Override
+    public Future< List< SearchResult > > search( String query, int maxResults ) {
+        return this.doAuthedCall( new SearchCall( query, maxResults ) );
     }
 
 }

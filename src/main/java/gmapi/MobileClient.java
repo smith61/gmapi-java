@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import gmapi.models.DeviceInfo;
+import gmapi.models.SearchResult;
 import gmapi.models.Track;
 
 public interface MobileClient {
@@ -30,5 +31,9 @@ public interface MobileClient {
     Future< Page< Track > > getPromotedTracks( );
 
     Future< Page< Track > > getPromotedTracks( int pageSize );
+
+    Future< List< SearchResult > > search( String query );
+
+    Future< List< SearchResult > > search( String query, int maxResults );
 
 }
